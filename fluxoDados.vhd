@@ -43,46 +43,54 @@ begin
    port map (
         clk => CLOCK_50, sec => sec
         );
-	process(sec)
-	begin
-		if (sec = '1') then
-			if (count_sec_u = 9) then
-				count_sec_u <= 0;
-				if (count_sec_d = 5) then
-					count_sec_d <= 0;
-					if (count_min_u = 9) then
-						count_min_u <= 0;
-						if (count_min_d = 5) then 
-							count_min_d <= 0;
-							if (count_hora_d < hora_d) then
-								if (count_hora_u = 9) then
-									count_hora_u <= 0;
-									count_hora_d <= count_hora_d + 1;
-								else
-									count_hora_u <= count_hora_u + 1;
-								end if;
-							else 
-								if (count_hora_u = hora_u) then
-									count_hora_u <= 0;
-									count_hora_d <= 0;
-								else
-									count_hora_u <= count_hora_u + 1;
-								end if;
-							end if;
-						else 
-							count_min_d <= count_min_d + 1;
-						end if;
-					else
-						count_min_u <= count_min_u + 1;
-					end if;
-				else
-					count_sec_d <= count_sec_d + 1;
-				end if;
-			else 
-				count_sec_u <= count_sec_u + 1;
-			end if;
-		end if;
-	end process;
+	soma_sec_u : work.ULA
+	port map (
+		A => count_sec_u, B => 1, rst => saida_comp_sec_u, enable => sec, overflow => enable_sec_d
+	);
+	soma_sec_d : work.ULA
+	por map (
+		A => count_sec_d, B => 1, rst => saida_comp_sec_d, enable => enable_sec_d, overflow => enable_min_u
+	);
+--	process(sec)
+--	begin
+--		if (sec = '1') then
+--			if (count_sec_u = 9) then
+--				count_sec_u <= 0;
+--				if (count_sec_d = 5) then
+--					count_sec_d <= 0;
+--					if (count_min_u = 9) then
+--						count_min_u <= 0;
+--						if (count_min_d = 5) then 
+--							count_min_d <= 0;
+--							if (count_hora_d < hora_d) then
+--								if (count_hora_u = 9) then
+--									count_hora_u <= 0;
+--									count_hora_d <= count_hora_d + 1;
+--								else
+--									count_hora_u <= count_hora_u + 1;
+--								end if;
+--							else 
+--								if (count_hora_u = hora_u) then
+--									count_hora_u <= 0;
+--									count_hora_d <= 0;
+--								else
+--									count_hora_u <= count_hora_u + 1;
+--								end if;
+--							end if;
+--						else 
+--							count_min_d <= count_min_d + 1;
+--						end if;
+--					else
+--						count_min_u <= count_min_u + 1;
+--					end if;
+--				else
+--					count_sec_d <= count_sec_d + 1;
+--				end if;
+--			else 
+--				count_sec_u <= count_sec_u + 1;
+--			end if;
+--		end if;
+--	end process;
 	-- instaciaçao sem declaracao de componente:
 	display1 : work.conversor7Seg
    port map (
