@@ -14,7 +14,11 @@ entity fluxoDados is
 
 		-- Output ports
 		HEX0 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX1 : out STD_LOGIC_VECTOR(6 DOWNTO 0)
+		HEX1 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
+		HEX2 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
+		HEX3 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
+		HEX4 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
+		HEX5 : out STD_LOGIC_VECTOR(6 DOWNTO 0)
 		);
 end entity;
 
@@ -22,39 +26,67 @@ end entity;
 -- Use Clause(s) (optional)
 
 architecture fluxoDados_arc of fluxoDados is
-	
-	signal count_sec_u : integer := 0;
-	signal count_sec_d : integer := 0;
-	signal sec : STD_LOGIC;
---	signal saida7seg : STD_LOGIC_VECTOR(6 DOWNTO 0);
+
+	signal sec: STD_LOGIC;
+
+	signal enable_sec_d: STD_LOGIC := '0';
+	signal enable_min_u: STD_LOGIC := '0';
+	signal enable_min_d: STD_LOGIC := '0';
+	signal enable_hora_u: STD_LOGIC := '0';
+	signal enable_hora_d: STD_LOGIC := '0';
+
+
 
 begin
+	-- Divisor
 	divisor : work.divisor
    port map (
         clk => CLOCK_50, sec => sec
         );
-	process(sec)
-	begin
-		if (sec = '1') then
-			if (count_sec_u = 9) then
-				count_sec_u <= 0;
-				if (count_sec_d = 5) then
-					count_sec_d <= 0;
-				else
-					count_sec_d <= count_sec_d + 1;
-				end if;
-			else 
-				count_sec_u <= count_sec_u + 1;
-			end if;
-		end if;
-	end process;
-	-- instaciaçao sem declaracao de componente:
-	display1 : work.conversor7Seg
+		  
+	-- Sec unidade
+	sec_uni: work.controlador_tempo
    port map (
-        dadoHex => count_sec_u, apaga => '0', negativo => '0', overFlow => '0', saida7seg => HEX0
-        );
-	display2 : work.conversor7Seg
-	port map (
-        dadoHex => count_sec_d, apaga => '0', negativo => '0', overFlow => '0', saida7seg => HEX1
+        clk => CLOCK_50, 
+		  enable => sec, 
+		  func => "1010", 
+		  enable_out => enable_sec_d,
+		  hex_out => HEX0
     );
+	 	-- Sec dezena
+	sec_d: work.controlador_tempo
+   port map (
+		  clk => CLOCK_50, 
+		  enable => enable_sec_d, 
+		  func => "0110", 
+		  enable_out => enable_min_u,
+		  hex_out => HEX1
+    );
+	 -- Min Unidade
+	min_uni: work.controlador_tempo
+   port map (
+        clk => CLOCK_50, 
+		  enable => enable_min_u, 
+		  func => "1010", 
+		  enable_out => enable_min_d,
+		  hex_out => HEX2
+    );
+	 -- Min Dezena
+	min_d: work.controlador_tempo
+   port map (
+        clk => CLOCK_50, 
+		  enable => enable_min_d, 
+		  func => "0110", 
+		  enable_out => enable_hora_u,
+		  hex_out => HEX3
+    );
+	 -- Hora unidade
+	hora_u: work.controlador_tempo_hora
+   port map (
+        clk => CLOCK_50, 
+		  enable => enable_hora_u,
+		  hex_out => HEX4,
+		  hex_out2 => HEX5
+    );
+--	------------
 end architecture;

@@ -7,10 +7,10 @@ entity ULA is
 
 	port
 	(
-		A, B : in integer;
-		op   : in std_logic;
-		
-		result : out integer
+		A, B   : in STD_LOGIC_VECTOR(3 DOWNTO 0);
+		rst  : in std_logic;
+	
+		result   : out STD_LOGIC_VECTOR(3 DOWNTO 0)
 	);
 end entity;
 
@@ -19,6 +19,7 @@ architecture SumSub of ULA is
 
 begin
 
-	result <= A when (op = '0') else B;
-
+	result <= "0000" when (rst = '1') else
+				 A + B;
+				 
 end architecture;

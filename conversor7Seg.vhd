@@ -7,7 +7,7 @@ entity conversor7Seg is
     port
     (
         -- Input ports
-        dadoHex : in  integer;
+        dadoHex : in  STD_LOGIC_VECTOR(3 DOWNTO 0);
         apaga   : in  std_logic := '0';
         negativo : in  std_logic := '0';
         overFlow : in  std_logic := '0';
@@ -33,16 +33,16 @@ architecture comportamento of conversor7Seg is
     signal rascSaida7seg: std_logic_vector(6 downto 0);
 
 begin
-  rascSaida7seg <= "1000000" when dadoHex=0 else ---0     
-                   "1111001" when dadoHex=1 else ---1
-                   "0100100" when dadoHex=2 else ---2
-                   "0110000" when dadoHex=3 else ---3
-                   "0011001" when dadoHex=4 else ---4
-                   "0010010" when dadoHex=5 else ---5
-                   "0000010" when dadoHex=6 else ---6
-                   "1111000" when dadoHex=7 else ---7
-                   "0000000" when dadoHex=8 else ---8
-                   "0010000" when dadoHex=9 else ---9
+  rascSaida7seg <= "1000000" when dadoHex="0000" else ---0     
+                   "1111001" when dadoHex="0001" else ---1
+                   "0100100" when dadoHex="0010" else ---2
+                   "0110000" when dadoHex="0011" else ---3
+                   "0011001" when dadoHex="0100" else ---4
+                   "0010010" when dadoHex="0101" else ---5
+                   "0000010" when dadoHex="0110" else ---6
+                   "1111000" when dadoHex="0111" else ---7
+                   "0000000" when dadoHex="1000" else ---8
+                   "0010000" when dadoHex="1001" else ---9
 --                   "0001000" when dadoHex="1010" else ---A
 --                   "0000011" when dadoHex="1011" else ---B
 --                   "1000110" when dadoHex="1100" else ---C  

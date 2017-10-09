@@ -1,0 +1,43 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;	
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+entity controlador_tempo is
+
+	port
+	(
+		clk : in STD_LOGIC;
+		enable: in STD_LOGIC;
+		func : in integer;
+		
+		result : out integer;
+		enable_out : out STD_LOGIC
+	);
+end entity;
+
+
+architecture controlador_tempo_arc of controlador_tempo is
+
+	signal saida_comp : STD_LOGIC; 
+	signal entrada_ula : integer := 0;
+	signal A : integer := 0;
+	
+begin
+
+	registrador : work.registrador
+	port map (
+		DIN => A, ENABLE => '1', CLK => clk, RESET => '0' , DOUT => entrada_ula
+	);
+	comp : work.comparador
+	port map (
+		A => entrada_ula, B => func, result => saida_comp
+	);
+	soma : work.ULA
+	port map (
+		A => entrada_ula, B => 1, rst => saida_comp, enable => enable, overflow => enable_out, op => '0', result => A
+	);
+	result <= A;
+
+
+end architecture;
