@@ -7,8 +7,8 @@ use ieee.std_logic_unsigned.all;
 entity registrador is
 
 	port (
-		  DIN : in STD_LOGIC_VECTOR(3 DOWNTO 0);
-		  DOUT : out STD_LOGIC_VECTOR(3 DOWNTO 0);
+		  DIN : in integer;
+		  DOUT : out integer;
 		  ENABLE : in std_logic;
 		  CLK, RESET : in std_logic
 	  );
@@ -23,11 +23,13 @@ architecture comportamento of registrador is
          -- reset ativo em ALTO
          if RESET = '1' then
             --DOUT <= "00000000";
-            DOUT <= "0000"; -- Assim, o codigo fica reconfiguravel.
+            DOUT <= 0; -- Assim, o codigo fica reconfiguravel.
          -- ativo na subida do CLK
-         elsif (rising_edge(CLK)) then
+         elsif CLK'event and CLK = '1' then
              if ENABLE='1' then
                  DOUT <= DIN;
+             else            -- para evitar que seja implementado um latch.
+                 null;  
              end if;
          end if;
      end process;
