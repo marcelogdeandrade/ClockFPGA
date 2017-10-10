@@ -23,8 +23,6 @@ end entity;
 architecture comp of comparador is
 
 begin
---	result <= '1' when (A = B) else '0';
---	C <= "0000" when (A = B) else A;
 	process(clk)
 	begin
 		if rising_edge(clk) then

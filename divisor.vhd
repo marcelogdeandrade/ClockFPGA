@@ -27,9 +27,11 @@ architecture divisor_arch of divisor is
 	signal frequency : integer := 5000;
 	
 begin
-			 
+	
+	--Retorna um quando count = frquency
 	process(clk, speed)
 	begin
+		-- Troca velocidade do relogio
 		if (speed = '0') then
 			frequency <= 50000000;
 		else

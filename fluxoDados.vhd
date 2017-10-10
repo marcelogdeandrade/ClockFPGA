@@ -79,7 +79,7 @@ begin
 		  func => "1010", 
 		  enable_out => enable_min_d,
 		  hex_out => HEX2,
-		  keyv => 0,
+		  keyv => 2,
 		  KEY => KEY
     );
 	 -- Min Dezena
@@ -90,7 +90,7 @@ begin
 		  func => "0110", 
 		  enable_out => enable_hora_u,
 		  hex_out => HEX3,
-		  keyv => 1,
+		  keyv => 3,
 		  KEY => KEY
     );
 	 -- Hora unidade
@@ -100,9 +100,9 @@ begin
 		  enable => enable_hora_u,
 		  hex_out => HEX4,
 		  hex_out2 => HEX5,
-		  keyv => 2,
-		  keyv2 => 3,
-		  KEY => KEY
+		  keyv => 0,
+		  keyv2 => 1,
+		  KEY => KEY,
 		  format => SW(0)
     );
 	 LEDG(0) <= SW(0);
