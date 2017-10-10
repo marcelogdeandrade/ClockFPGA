@@ -3,14 +3,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 
-
 entity controlador_tempo_hora is
 
 	port
 	(
 		clk : in STD_LOGIC;
 		enable: in STD_LOGIC;
-		format: in STD_LOGIC;
 		hex_out: out STD_LOGIC_VECTOR(6 DOWNTO 0);
 		hex_out2: out STD_LOGIC_VECTOR(6 DOWNTO 0)
 	);
@@ -31,26 +29,10 @@ architecture controlador_tempo_hora_arc of controlador_tempo_hora is
 	
 	signal enable_out : STD_LOGIC;
 	signal func_hora_u : STD_LOGIC_VECTOR(3 DOWNTO 0);
-	signal func_hora_d : STD_LOGIC_VECTOR(3 DOWNTO 0);
-	
-	signal aux : integer;
 	
 begin
-
-	func_hora_u <= "0100" when ((output_2 = "0010") and (format = '0')) else 
-						"0011" when ((output_2 = "0001") and (format = '1')) else
-						"1010";
 	
-	func_hora_d <= "0011" when (format = '0') else
-						"0010";
---	process(format)
---	begin
---		if (output_2 > "0000" and output > "0001") then
---			output_2 <= output_2 - "0001";
---			output <= output + output_2  - "0010";
---		end if;
---	end process;
-	
+	func_hora_u <= "0100" when (output_2 = "0010") else "1010";
 	
 	registrador : work.registrador
 	port map (
@@ -84,7 +66,7 @@ begin
 	);
 	comp_2 : work.comparador
 	port map (
-		A => out_ula_2, B => func_hora_d, clk => clk, C => out_comp_2, enable => enable_out
+		A => out_ula_2, B => "0011", clk => clk, C => out_comp_2, enable => enable_out
 	);
 	mux_2 : work.mux
 	port map (
