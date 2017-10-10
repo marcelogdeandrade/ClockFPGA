@@ -7,14 +7,11 @@ use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 
 entity divisor is
-	generic
-	(
-		frequency : integer := 500000
-	);
 	port
 	(
 		-- Input ports
 		clk	: in  STD_LOGIC := '0';
+		speed : in STD_LOGIC;
 
 		-- Output ports
 		sec	: out STD_LOGIC
@@ -27,12 +24,19 @@ end entity;
 architecture divisor_arch of divisor is
 	
 	signal count : integer := 0;
+	signal frequency : integer := 5000;
 	
 begin
-	process(clk)
+			 
+	process(clk, speed)
 	begin
+		if (speed = '0') then
+			frequency <= 50000000;
+		else
+			frequency <= 50000;
+		end if;
 		if (rising_edge(clk)) then
-			if (count = frequency) then
+			if (count > frequency) then
 				sec <= '1';
 				count <= 0;
 			else

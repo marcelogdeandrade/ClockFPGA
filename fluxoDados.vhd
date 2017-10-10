@@ -12,6 +12,7 @@ entity fluxoDados is
 		-- Input ports
 		CLOCK_50	: in  STD_LOGIC;
 		KEY      : in STD_LOGIC_VECTOR(3 DOWNTO 0);
+		SW: in STD_LOGIC_VECTOR(17 DOWNTO 0);
 
 		-- Output ports
 		HEX0 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
@@ -19,7 +20,8 @@ entity fluxoDados is
 		HEX2 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
 		HEX3 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
 		HEX4 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
-		HEX5 : out STD_LOGIC_VECTOR(6 DOWNTO 0)
+		HEX5 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
+		LEDG : out STD_LOGIC_VECTOR(8 DOWNTO 0)
 		);
 end entity;
 
@@ -42,8 +44,10 @@ begin
 	-- Divisor
 	divisor : work.divisor
    port map (
-        clk => CLOCK_50, sec => sec
-        );
+        clk => CLOCK_50, 
+		  sec => sec,
+		  speed => SW(1)
+    );
 		  
 	-- Sec unidade
 	sec_uni: work.controlador_tempo
@@ -99,6 +103,9 @@ begin
 		  keyv => 2,
 		  keyv2 => 3,
 		  KEY => KEY
+		  format => SW(0)
     );
+	 LEDG(0) <= SW(0);
+	 
 --	------------
 end architecture;
