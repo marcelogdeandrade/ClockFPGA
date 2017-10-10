@@ -9,7 +9,7 @@ use ieee.std_logic_unsigned.all;
 entity divisor is
 	generic
 	(
-		frequency : integer := 5000
+		frequency : integer := 500000
 	);
 	port
 	(

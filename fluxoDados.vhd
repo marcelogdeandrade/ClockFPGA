@@ -11,6 +11,7 @@ entity fluxoDados is
 	(
 		-- Input ports
 		CLOCK_50	: in  STD_LOGIC;
+		KEY      : in STD_LOGIC_VECTOR(3 DOWNTO 0);
 
 		-- Output ports
 		HEX0 : out STD_LOGIC_VECTOR(6 DOWNTO 0);
@@ -51,7 +52,9 @@ begin
 		  enable => sec, 
 		  func => "1010", 
 		  enable_out => enable_sec_d,
-		  hex_out => HEX0
+		  hex_out => HEX0,
+		  keyv => 4,
+		  KEY => KEY
     );
 	 	-- Sec dezena
 	sec_d: work.controlador_tempo
@@ -60,7 +63,9 @@ begin
 		  enable => enable_sec_d, 
 		  func => "0110", 
 		  enable_out => enable_min_u,
-		  hex_out => HEX1
+		  hex_out => HEX1,
+		  keyv => 4,
+		  KEY => KEY
     );
 	 -- Min Unidade
 	min_uni: work.controlador_tempo
@@ -69,7 +74,9 @@ begin
 		  enable => enable_min_u, 
 		  func => "1010", 
 		  enable_out => enable_min_d,
-		  hex_out => HEX2
+		  hex_out => HEX2,
+		  keyv => 0,
+		  KEY => KEY
     );
 	 -- Min Dezena
 	min_d: work.controlador_tempo
@@ -78,7 +85,9 @@ begin
 		  enable => enable_min_d, 
 		  func => "0110", 
 		  enable_out => enable_hora_u,
-		  hex_out => HEX3
+		  hex_out => HEX3,
+		  keyv => 1,
+		  KEY => KEY
     );
 	 -- Hora unidade
 	hora_u: work.controlador_tempo_hora
@@ -86,7 +95,10 @@ begin
         clk => CLOCK_50, 
 		  enable => enable_hora_u,
 		  hex_out => HEX4,
-		  hex_out2 => HEX5
+		  hex_out2 => HEX5,
+		  keyv => 2,
+		  keyv2 => 3,
+		  KEY => KEY
     );
 --	------------
 end architecture;
